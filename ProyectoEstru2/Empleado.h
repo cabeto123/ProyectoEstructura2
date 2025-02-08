@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 using namespace std;
-class Empleados
+class Empleado
 {
 	private:
 		int id;
