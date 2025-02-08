@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ArbolBPlus.cpp" />
+    <ClCompile Include="Clientes.cpp" />
     <ClCompile Include="Empleado.cpp" />
     <ClCompile Include="NodoBPlus.cpp" />
     <ClCompile Include="Pedido.cpp" />
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArbolBPlus.h" />
+    <ClInclude Include="Clientes.h" />
     <ClInclude Include="Empleado.h" />
     <ClInclude Include="NodoBPlus.h" />
     <ClInclude Include="Pedido.h" />
