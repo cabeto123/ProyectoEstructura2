@@ -11,7 +11,7 @@ void gestion_empleados() {
 	int id, salario;
 	bool estado;
 	string nombre, departamento, puesto, activo;
-	ArbolBPlus arbol(4);
+	ArbolBPlus arbol(3);
 	ifstream archivo("empleados.bin");
 	Empleado* emp = NULL;
 	//fin de variables
