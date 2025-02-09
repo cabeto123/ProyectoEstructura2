@@ -1,6 +1,7 @@
 #include "ArbolBPlus.h"
+#include "Inventario.h"
 
-void ArbolBPlus::insertarEnNodoInterno(const string& clave, NodoBPlus* nodo, NodoBPlus* hijoDerecho) {
+void ArbolBPlus::insertarEnNodoInterno(const std::string& clave, NodoBPlus* nodo, NodoBPlus* hijoDerecho) {
     auto posicion = upper_bound(nodo->claves.begin(), nodo->claves.end(), clave) - nodo->claves.begin();
     nodo->claves.insert(nodo->claves.begin() + posicion, clave);
     nodo->hijos.insert(nodo->hijos.begin() + posicion + 1, hijoDerecho);
@@ -10,10 +11,9 @@ void ArbolBPlus::insertarEnNodoInterno(const string& clave, NodoBPlus* nodo, Nod
     }
 }
 
-
 void ArbolBPlus::dividirNodoInterno(NodoBPlus* nodo) {
     int mitad = nodo->claves.size() / 2;
-    string clavePromocionada = nodo->claves[mitad];
+    std::string clavePromocionada = nodo->claves[mitad];
 
     NodoBPlus* nodoDerecho = new NodoBPlus(false);
     nodoDerecho->claves.assign(nodo->claves.begin() + mitad + 1, nodo->claves.end());
@@ -52,7 +52,9 @@ void ArbolBPlus::dividirHoja(NodoBPlus* nodo) {
 
     NodoBPlus* nodoDerecho = new NodoBPlus(true);
     nodoDerecho->claves.assign(nodo->claves.begin() + mitad, nodo->claves.end());
+    nodoDerecho->valores.assign(nodo->valores.begin() + mitad, nodo->valores.end());
     nodo->claves.resize(mitad);
+    nodo->valores.resize(mitad);
 
     nodoDerecho->siguiente = nodo->siguiente;
     nodo->siguiente = nodoDerecho;
@@ -68,9 +70,7 @@ void ArbolBPlus::dividirHoja(NodoBPlus* nodo) {
     }
 }
 
-
-
-void ArbolBPlus::insertar(const string& clave) {
+void ArbolBPlus::insertar(const std::string& clave, Producto* producto) {
     NodoBPlus* actual = raiz;
 
     while (!actual->esHoja) {
@@ -80,10 +80,26 @@ void ArbolBPlus::insertar(const string& clave) {
 
     auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
     actual->claves.insert(actual->claves.begin() + posicion, clave);
+    actual->valores.insert(actual->valores.begin() + posicion, producto);
 
     if (actual->claves.size() == 2 * orden - 1) {
         dividirHoja(actual);
     }
+}
+
+Producto* ArbolBPlus::buscar(const std::string& clave) {
+    NodoBPlus* actual = raiz;
+
+    while (!actual->esHoja) {
+        auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+        actual = actual->hijos[posicion];
+    }
+
+    auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+    if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
+        return actual->valores[posicion];
+    }
+    return nullptr;
 }
 
 void ArbolBPlus::recorrer() {
@@ -93,10 +109,9 @@ void ArbolBPlus::recorrer() {
     }
 
     while (actual != nullptr) {
-        for (const string& clave : actual->claves) {
-            cout << clave << " ";
+        for (size_t i = 0; i < actual->claves.size(); ++i) {
+            std::cout << "Clave: " << actual->claves[i] << ", Producto: " << actual->valores[i]->nombre << std::endl;
         }
         actual = actual->siguiente;
     }
-    cout << endl;
 }

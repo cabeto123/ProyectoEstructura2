@@ -130,6 +130,7 @@
     <ClCompile Include="ArbolBPlus.cpp" />
     <ClCompile Include="Clientes.cpp" />
     <ClCompile Include="Empleado.cpp" />
+    <ClCompile Include="Inventario.cpp" />
     <ClCompile Include="NodoBPlus.cpp" />
     <ClCompile Include="Pedido.cpp" />
     <ClCompile Include="ProyectoEstru2.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="ArbolBPlus.h" />
     <ClInclude Include="Clientes.h" />
     <ClInclude Include="Empleado.h" />
+    <ClInclude Include="Inventario.h" />
     <ClInclude Include="NodoBPlus.h" />
     <ClInclude Include="Pedido.h" />
     <ClInclude Include="Venta.h" />
