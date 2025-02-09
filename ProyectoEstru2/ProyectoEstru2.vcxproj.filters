@@ -27,9 +27,6 @@
     <ClCompile Include="Pedido.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="NodoBPlus.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
     <ClCompile Include="ArbolBPlus.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -48,9 +45,6 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Pedido.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="NodoBPlus.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="ArbolBPlus.h">
