@@ -6,15 +6,18 @@ class Empleado
 	private:
 		int id;
 		int salario;
-		bool estado;
+		string estado;
 	public:
 		string nombre,departamento, puesto;
+		Empleado(string nombre, string departamento, string puesto, int id, int salario, string estado);
+		Empleado();
 		int getid();
 		int getsalario();
-		bool getestado();
+		string getestado();
 		void setid(int id);
 		void setsalario(int salario);
-		void setestado(bool estado);
-
+		void setestado(string estado);
+		void serialize(std::ofstream& out) const;
+		 void deserialize(std::ifstream& in);
 };
 

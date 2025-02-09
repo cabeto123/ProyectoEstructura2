@@ -36,6 +36,9 @@
     <ClCompile Include="Inventario.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="Producto.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Empleado.h">
@@ -54,6 +57,9 @@
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
     <ClInclude Include="Inventario.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="Producto.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

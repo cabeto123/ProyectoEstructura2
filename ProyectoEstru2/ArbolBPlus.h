@@ -7,14 +7,15 @@
 #include <algorithm>
 #include <string>
 #include <fstream>
-
-class Producto;
+#include "Producto.h"
+#include "Empleado.h"
 
 class NodoBPlus {
 public:
 	bool esHoja;
 	std::vector<std::string> claves;
 	std::vector<Producto*> valores;
+	std::vector<Empleado*> empleados;
 	std::vector<NodoBPlus*> hijos;
 	NodoBPlus* siguiente;
 
@@ -32,13 +33,20 @@ private:
 	NodoBPlus* encontrarPadre(NodoBPlus* actual, NodoBPlus* hijo);
 	void dividirHoja(NodoBPlus* nodo);
 	NodoBPlus* deserializarNodo(std::ifstream& in);
+	NodoBPlus* deserializarNodoEmpleado(std::ifstream& in);
 	void serializarNodo(std::ofstream& out, NodoBPlus* nodo);
+	void serializarNodoEmpleado(std::ofstream& out, NodoBPlus* nodo);
 public:
+	ArbolBPlus();
 	ArbolBPlus(int _orden) : orden(_orden), raiz(new NodoBPlus(true)) {}
 	void cargarDesdeArchivo(const std::string& nombreArchivo);
+	void cargarDesdeArchivoempleado(const std::string& nombreArchivo);
 	void guardarEnArchivo(const std::string& nombreArchivo);
+	void guardarEnArchivoEmpleados(const std::string& nombreArchivo);
 	void insertar(const std::string& clave, Producto* producto);
+	void insertarempleado(const std::string& clave, Empleado* empleado);
 	Producto* buscar(const std::string& clave);
+	Empleado* buscarempleado(const std::string& clave);
 	void recorrer();
 };
 

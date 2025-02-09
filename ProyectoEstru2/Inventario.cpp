@@ -1,9 +1,4 @@
 #include "Inventario.h"
-
-Producto::Producto(std::string id, std::string nombre, std::string categoria, double precio, int cantidad, bool disponible)
-    : id(id), nombre(nombre), categoria(categoria), precio(precio), cantidad(cantidad), disponible(disponible) {
-}
-
 void Inventario::agregarProducto(Producto* producto) {
     arbolPorId.insertar(producto->id, producto);
     arbolPorCategoria.insertar(producto->categoria, producto);
