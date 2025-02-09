@@ -3,11 +3,16 @@
 #include "Venta.h"
 #include "Pedido.h"
 #include "ArbolBPlus.h"
+#include "Inventario.h"
 using namespace std;
 void gestion_empleados() {
 
 }
 int main() {
+    Inventario inventario;
+
+    inventario.arbolPorId.cargarDesdeArchivo("archivo.bin");
+	inventario.arbolPorId.recorrer();
     int opcion = 1;
     while (opcion!=6) {
         cout << "1.Gestion de empleados"<<endl;
