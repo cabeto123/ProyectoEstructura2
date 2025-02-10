@@ -101,6 +101,51 @@ void gestion_empleados() {
 	}
 	cout << endl;
 }
+void gestion_inventarios() {
+	Inventario inventario;
+
+	// Crear algunos productos
+	Producto* p1 = new Producto("001", "Laptop", "Electrónica", 1200.50, 10, true);
+	Producto* p2 = new Producto("002", "Smartphone", "Electrónica", 800.00, 15, true);
+	Producto* p3 = new Producto("003", "Mesa", "Muebles", 150.75, 5, true);
+	Producto* p4 = new Producto("004", "Silla", "Muebles", 50.25, 20, true);
+	Producto* p5 = new Producto("005", "Tablet", "Electrónica", 300.00, 8, true);
+
+	inventario.agregarProducto(p1);
+	inventario.agregarProducto(p2);
+	inventario.agregarProducto(p3);
+	inventario.agregarProducto(p4);
+	inventario.agregarProducto(p5);
+	std::cout << "\n\n=== Gestor de inventarios ===" << std::endl;
+	std::cout << "=== Buscar producto por ID ===" << std::endl;
+	Producto* producto = inventario.buscarPorId("002");
+	if (producto != nullptr) {
+		std::cout << "Producto encontrado: " << producto->nombre
+			<< ", Categoría: " << producto->categoria
+			<< ", Precio: $" << producto->precio << std::endl;
+	}
+	else {
+		std::cout << "Producto no encontrado." << std::endl;
+	}
+
+	std::cout << "\n=== Buscar productos por categoría ===" << std::endl;
+	std::vector<Producto*> productosElectronica = inventario.buscarPorCategoria("Electrónica");
+	std::cout << "Productos en la categoría Electrónica: " << productosElectronica.size() << std::endl;
+	for (Producto* p : productosElectronica) {
+		std::cout << " - " << p->nombre << " (ID: " << p->id << ")" << std::endl;
+	}
+
+	std::cout << "\n=== Recorrer inventario ===" << std::endl;
+	inventario.recorrerInventario();
+
+	delete p1;
+	delete p2;
+	delete p3;
+	delete p4;
+	delete p5;
+	std::cout << "\n=== Fin de gestor de inventarios === \n\n" << std::endl;
+	return;
+}
 int main() {
 	int opcion = 1;
 	while (opcion != 6) {
@@ -118,6 +163,7 @@ int main() {
 			gestion_empleados();
 			break;
 		case 2:
+			gestion_inventarios();
 			break;
 		case 3:
 			break;

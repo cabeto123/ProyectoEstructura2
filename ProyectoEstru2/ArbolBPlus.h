@@ -48,6 +48,9 @@ public:
 	Producto* buscar(const std::string& clave);
 	Empleado* buscarempleado(const std::string& clave);
 	void recorrer();
+	NodoBPlus* obtenerRaiz() const;
+	//void guardarEnArchivo(const std::string& nombreArchivo);
+	//void cargarDesdeArchivo(const std::string& nombreArchivo);
 };
 
 #endif // ARBOLBPLUS_H

@@ -390,3 +390,7 @@ void ArbolBPlus::recorrer() {
 		actual = actual->siguiente;
 	}
 }
+
+NodoBPlus* ArbolBPlus::obtenerRaiz() const {
+	return raiz;
+}
