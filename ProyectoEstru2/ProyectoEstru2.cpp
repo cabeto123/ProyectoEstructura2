@@ -14,6 +14,7 @@ void gestion_empleados() {
 	ArbolBPlus arbol(3);
 	ifstream archivo("empleados.bin");
 	Empleado* emp = NULL;
+	Empleado* aux = new Empleado();
 	//fin de variables
 	while (opcion != 4) {
 		cout << "Que desea hacer?" << endl;
@@ -46,8 +47,7 @@ void gestion_empleados() {
 
 			if (archivo.good())
 			{
-				arbol.cargarDesdeArchivoempleado("empleados.bin");
-
+				arbol.cargarDesdeArchivo(aux,"empleados.bin");
 				arbol.insertarempleado(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
 
 			}
@@ -55,11 +55,11 @@ void gestion_empleados() {
 				arbol.insertarempleado(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
 
 			}
-			arbol.guardarEnArchivoEmpleados("empleados.bin");
-			
+			arbol.guardarEnArchivo(aux, "empleados.bin");
 			cout << endl << "---Empleado agregado exitosamente---" << endl;
 			break;
 		case 2:
+			arbol.cargarDesdeArchivo(aux, "empleados.bin");
 			cout << endl << "Digite el id del empleado a buscar: ";
 			cin >> id;
 			emp = arbol.buscarempleado(to_string(id));
@@ -68,6 +68,7 @@ void gestion_empleados() {
 				cout << endl << "No existe el empleado con ese id";
 			}
 			else {
+				
 				cout << endl << "---Modificar empleado---" << endl;
 				
 				cout << endl << "Digite el nombre: ";

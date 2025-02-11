@@ -3,7 +3,7 @@
 using namespace std;
 class Empleado
 {
-	private:
+	public:
 		int id;
 		int salario;
 		string estado;
