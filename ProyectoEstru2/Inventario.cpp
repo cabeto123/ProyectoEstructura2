@@ -5,7 +5,8 @@ void Inventario::agregarProducto(Producto* producto) {
 }
 
 Producto* Inventario::buscarPorId(std::string id) {
-    return arbolPorId.buscar(id);
+    Producto* p=reinterpret_cast<Producto*> (arbolPorId.buscar(id,new Producto()));
+    return p;
 }
 
 std::vector<Producto*> Inventario::buscarPorCategoria(std::string categoria) {

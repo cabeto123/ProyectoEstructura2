@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
+#include "ModuloPadre.h"
 using namespace std;
-class Empleado
+class Empleado:public ModuloPadre
 {
 	public:
 		int id;

@@ -4,6 +4,8 @@
 #include "Pedido.h"
 #include "ArbolBPlus.h"
 #include "Inventario.h"
+#include "ModuloPadre.h"
+
 using namespace std;
 void gestion_empleados() {
 	int opcion = 3;
@@ -48,11 +50,11 @@ void gestion_empleados() {
 			if (archivo.good())
 			{
 				arbol.cargarDesdeArchivo(aux,"empleados.bin");
-				arbol.insertarempleado(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
+				arbol.insertar(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
 
 			}
 			else {
-				arbol.insertarempleado(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
+				arbol.insertar(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
 
 			}
 			arbol.guardarEnArchivo(aux, "empleados.bin");
@@ -62,7 +64,7 @@ void gestion_empleados() {
 			arbol.cargarDesdeArchivo(aux, "empleados.bin");
 			cout << endl << "Digite el id del empleado a buscar: ";
 			cin >> id;
-			emp = arbol.buscarempleado(to_string(id));
+			emp =reinterpret_cast<Empleado*>( arbol.buscar(to_string(id),new Empleado()));
 			if (emp==NULL)
 			{
 				cout << endl << "No existe el empleado con ese id";
@@ -139,11 +141,7 @@ void gestion_inventarios() {
 	std::cout << "\n=== Recorrer inventario ===" << std::endl;
 	inventario.recorrerInventario();
 
-	delete p1;
-	delete p2;
-	delete p3;
-	delete p4;
-	delete p5;
+	
 	std::cout << "\n=== Fin de gestor de inventarios === \n\n" << std::endl;
 	return;
 }

@@ -1,5 +1,8 @@
 #include "Producto.h"
 
+
+
+
 void Producto::serialize(std::ofstream& out)const {
 	int tam = id.size();
 	out.write(reinterpret_cast<const char*>(&tam), sizeof(int));
@@ -49,10 +52,16 @@ Producto* Producto::deserialize(std::ifstream& in) {
 	return p;
 }
 
+
+
 Producto::Producto(std::string id, std::string nombre, std::string categoria, double precio, int cantidad, bool disponible)
-	: id(id), nombre(nombre), categoria(categoria), precio(precio), cantidad(cantidad), disponible(disponible) {
+{
 }
 
 Producto::Producto()
 {
 }
+
+
+
+

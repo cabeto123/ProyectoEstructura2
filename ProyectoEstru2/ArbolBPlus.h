@@ -36,10 +36,10 @@ private:
 public:
 	ArbolBPlus();
 	ArbolBPlus(int _orden) : orden(_orden), raiz(new NodoBPlus(true)) {}
-	void insertar(const std::string& clave, Producto* producto);
-	void insertarempleado(const std::string& clave, Empleado* empleado);
-	Producto* buscar(const std::string& clave);
-	Empleado* buscarempleado(const std::string& clave);
+	void insertar(const std::string& clave, ModuloPadre* m);
+	//void insertarempleado(const std::string& clave, Empleado* empleado);
+	ModuloPadre* buscar(const std::string& clave,ModuloPadre* m);
+	//Empleado* buscarempleado(const std::string& clave);
 	void recorrer();
 	NodoBPlus* obtenerRaiz() const;
 	template <typename T>

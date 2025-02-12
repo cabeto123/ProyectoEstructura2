@@ -131,6 +131,7 @@
     <ClCompile Include="Clientes.cpp" />
     <ClCompile Include="Empleado.cpp" />
     <ClCompile Include="Inventario.cpp" />
+    <ClCompile Include="ModuloPadre.cpp" />
     <ClCompile Include="Pedido.cpp" />
     <ClCompile Include="Producto.cpp" />
     <ClCompile Include="ProyectoEstru2.cpp" />
@@ -141,6 +142,7 @@
     <ClInclude Include="Clientes.h" />
     <ClInclude Include="Empleado.h" />
     <ClInclude Include="Inventario.h" />
+    <ClInclude Include="ModuloPadre.h" />
     <ClInclude Include="Pedido.h" />
     <ClInclude Include="Producto.h" />
     <ClInclude Include="Venta.h" />

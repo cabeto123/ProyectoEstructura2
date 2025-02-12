@@ -71,7 +71,7 @@ void ArbolBPlus::dividirHoja(NodoBPlus* nodo) {
 	}
 }
 
-void ArbolBPlus::insertar(const std::string& clave, Producto* producto) {
+void ArbolBPlus::insertar(const std::string& clave,ModuloPadre* m) {
 	NodoBPlus* actual = raiz;
 
 	while (!actual->esHoja) {
@@ -81,32 +81,42 @@ void ArbolBPlus::insertar(const std::string& clave, Producto* producto) {
 
 	auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
 	actual->claves.insert(actual->claves.begin() + posicion, clave);
-	actual->valores.insert(actual->valores.begin() + posicion, producto);
+	if (dynamic_cast<Producto*>(m))
+	{
+		Producto* producto = dynamic_cast<Producto*>(m);
+		actual->valores.insert(actual->valores.begin() + posicion, producto);
+	}
+	if (dynamic_cast<Empleado*>(m))
+	{
+		Empleado* empleado = dynamic_cast<Empleado*>(m);
+		actual->empleados.insert(actual->empleados.begin() + posicion, empleado);
+
+	}
+
 
 	if (actual->claves.size() == 2 * orden - 1) {
 		dividirHoja(actual);
 	}
 }
 
-void ArbolBPlus::insertarempleado(const std::string& clave, Empleado* empleado)
-{
-	NodoBPlus* actual = raiz;
+//void ArbolBPlus::insertarempleado(const std::string& clave, Empleado* empleado)
+//{
+//	NodoBPlus* actual = raiz;
+//
+//	while (!actual->esHoja) {
+//		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//		actual = actual->hijos[posicion];
+//	}
+//
+//	auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//	actual->claves.insert(actual->claves.begin() + posicion, clave);
+//
+//	if (actual->claves.size() == 2 * orden - 1) {
+//		dividirHoja(actual);
+//	}
+//}
 
-	while (!actual->esHoja) {
-		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
-		actual = actual->hijos[posicion];
-	}
-
-	auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
-	actual->claves.insert(actual->claves.begin() + posicion, clave);
-	actual->empleados.insert(actual->empleados.begin() + posicion, empleado);
-
-	if (actual->claves.size() == 2 * orden - 1) {
-		dividirHoja(actual);
-	}
-}
-
-Producto* ArbolBPlus::buscar(const std::string& clave) {
+ModuloPadre* ArbolBPlus::buscar(const std::string& clave,ModuloPadre* m) {
 	NodoBPlus* actual = raiz;
 
 	while (!actual->esHoja) {
@@ -116,24 +126,33 @@ Producto* ArbolBPlus::buscar(const std::string& clave) {
 
 	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
 	if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
-		return actual->valores[posicion];
+		Producto* z = reinterpret_cast<Producto*>(m);
+		if (typeid(*z) == typeid(Producto))
+		{
+			return actual->valores[posicion];
+		}
+		Empleado* x = reinterpret_cast<Empleado*>(m);
+		if (typeid(*x) == typeid(Empleado))
+		{
+			return actual->empleados[posicion];
+		}
 	}
 	return nullptr;
 }
-Empleado* ArbolBPlus::buscarempleado(const std::string& clave) {
-	NodoBPlus* actual = raiz;
-
-	while (!actual->esHoja) {
-		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
-		actual = actual->hijos[posicion];
-	}
-
-	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
-	if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
-		return actual->empleados[posicion];
-	}
-	return nullptr;
-}
+//Empleado* ArbolBPlus::buscarempleado(const std::string& clave) {
+//	NodoBPlus* actual = raiz;
+//
+//	while (!actual->esHoja) {
+//		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//		actual = actual->hijos[posicion];
+//	}
+//
+//	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//	if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
+//		return actual->empleados[posicion];
+//	}
+//	return nullptr;
+//}
 
 void ArbolBPlus::recorrer() {
 	NodoBPlus* actual = raiz;
