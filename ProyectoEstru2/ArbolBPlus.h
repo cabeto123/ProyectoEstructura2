@@ -33,6 +33,7 @@ private:
 	void dividirNodoInterno(NodoBPlus* nodo);
 	NodoBPlus* encontrarPadre(NodoBPlus* actual, NodoBPlus* hijo);
 	void dividirHoja(NodoBPlus* nodo);
+	void reequilibrarDespuesDeEliminar(NodoBPlus* nodo, NodoBPlus* padre, int indicePadre);
 public:
 	ArbolBPlus();
 	ArbolBPlus(int _orden) : orden(_orden), raiz(new NodoBPlus(true)) {}
@@ -42,6 +43,7 @@ public:
 	//Empleado* buscarempleado(const std::string& clave);
 	void recorrer();
 	NodoBPlus* obtenerRaiz() const;
+	void eliminar(const std::string& clave);
 	template <typename T>
 	void guardarEnArchivo(const T* dato, const std::string& nombreArchivo) {
 		std::ofstream out(nombreArchivo, std::ios::binary);

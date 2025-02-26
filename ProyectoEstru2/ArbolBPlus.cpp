@@ -172,3 +172,75 @@ void ArbolBPlus::recorrer() {
 NodoBPlus* ArbolBPlus::obtenerRaiz() const {
 	return raiz;
 }
+
+void ArbolBPlus::eliminar(const std::string& clave) {
+	NodoBPlus* actual = raiz;
+	NodoBPlus* padre = nullptr;
+	int indicePadre = -1;
+
+	while (!actual->esHoja) {
+		auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+		padre = actual;
+		indicePadre = posicion;
+		actual = actual->hijos[posicion];
+	}
+
+	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+	if (posicion >= actual->claves.size() || actual->claves[posicion] != clave) {
+		std::cout << "Clave no encontrada." << std::endl;
+		return;
+	}
+
+	actual->claves.erase(actual->claves.begin() + posicion);
+	actual->valores.erase(actual->valores.begin() + posicion);
+	if (actual->claves.size() >= orden / 2 || actual == raiz) return;
+	reequilibrarDespuesDeEliminar(actual, padre, indicePadre);
+}
+
+
+void ArbolBPlus::reequilibrarDespuesDeEliminar(NodoBPlus* nodo, NodoBPlus* padre, int indicePadre) {
+	if (!padre) return;
+
+	NodoBPlus* hermanoIzquierdo = (indicePadre > 0) ? padre->hijos[indicePadre - 1] : nullptr;
+	NodoBPlus* hermanoDerecho = (indicePadre < padre->hijos.size() - 1) ? padre->hijos[indicePadre + 1] : nullptr;
+
+	if (hermanoIzquierdo && hermanoIzquierdo->claves.size() > orden / 2) {
+		nodo->claves.insert(nodo->claves.begin(), hermanoIzquierdo->claves.back());
+		nodo->valores.insert(nodo->valores.begin(), hermanoIzquierdo->valores.back());
+		hermanoIzquierdo->claves.pop_back();
+		hermanoIzquierdo->valores.pop_back();
+		padre->claves[indicePadre - 1] = nodo->claves[0];
+		return;
+	}
+
+	if (hermanoDerecho && hermanoDerecho->claves.size() > orden / 2) {
+		nodo->claves.push_back(hermanoDerecho->claves.front());
+		nodo->valores.push_back(hermanoDerecho->valores.front());
+		hermanoDerecho->claves.erase(hermanoDerecho->claves.begin());
+		hermanoDerecho->valores.erase(hermanoDerecho->valores.begin());
+		padre->claves[indicePadre] = hermanoDerecho->claves[0];
+		return;
+	}
+
+	if (hermanoIzquierdo) {
+		hermanoIzquierdo->claves.insert(hermanoIzquierdo->claves.end(), nodo->claves.begin(), nodo->claves.end());
+		hermanoIzquierdo->valores.insert(hermanoIzquierdo->valores.end(), nodo->valores.begin(), nodo->valores.end());
+		hermanoIzquierdo->siguiente = nodo->siguiente;
+		padre->claves.erase(padre->claves.begin() + indicePadre - 1);
+		padre->hijos.erase(padre->hijos.begin() + indicePadre);
+		delete nodo;
+	}
+	else if (hermanoDerecho) {
+		nodo->claves.insert(nodo->claves.end(), hermanoDerecho->claves.begin(), hermanoDerecho->claves.end());
+		nodo->valores.insert(nodo->valores.end(), hermanoDerecho->valores.begin(), hermanoDerecho->valores.end());
+		nodo->siguiente = hermanoDerecho->siguiente;
+		padre->claves.erase(padre->claves.begin() + indicePadre);
+		padre->hijos.erase(padre->hijos.begin() + indicePadre + 1);
+		delete hermanoDerecho;
+	}
+
+	if (padre == raiz && padre->claves.empty()) {
+		raiz = padre->hijos[0];
+		delete padre;
+	}
+}
