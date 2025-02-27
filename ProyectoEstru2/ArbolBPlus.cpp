@@ -243,6 +243,10 @@ NodoBPlus* ArbolBPlus::deserializarNodoEmpleado(std::ifstream& in)
 
 	return nodo;
 }
+NodoBPlus* ArbolBPlus::deserializarNodoCliente(std::ifstream& in)
+{
+	return nullptr;
+}
 void ArbolBPlus::insertarEnNodoInterno(const std::string& clave, NodoBPlus* nodo, NodoBPlus* hijoDerecho) {
 	auto posicion = upper_bound(nodo->claves.begin(), nodo->claves.end(), clave) - nodo->claves.begin();
 	nodo->claves.insert(nodo->claves.begin() + posicion, clave);
