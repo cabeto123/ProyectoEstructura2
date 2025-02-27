@@ -5,6 +5,8 @@
 #include "Pedido.h"
 #include "ArbolBPlus.h"
 #include "Inventario.h"
+#include "ModuloPadre.h"
+
 using namespace std;
 void gestion_empleados() {
 	int opcion = 3;
@@ -15,6 +17,7 @@ void gestion_empleados() {
 	ArbolBPlus arbol(3);
 	ifstream archivo("empleados.bin");
 	Empleado* emp = NULL;
+	Empleado* aux = new Empleado();
 	//fin de variables
 	while (opcion != 4) {
 		cout << "Que desea hacer?" << endl;
@@ -47,28 +50,28 @@ void gestion_empleados() {
 
 			if (archivo.good())
 			{
-				arbol.cargarDesdeArchivoempleado("empleados.bin");
-
-				arbol.insertarempleado(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
+				arbol.cargarDesdeArchivo(aux,"empleados.bin");
+				arbol.insertar(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
 
 			}
 			else {
-				arbol.insertarempleado(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
+				arbol.insertar(to_string(id), new Empleado(nombre, departamento, puesto, id, salario, activo));
 
 			}
-			arbol.guardarEnArchivoEmpleados("empleados.bin");
-			
+			arbol.guardarEnArchivo(aux, "empleados.bin");
 			cout << endl << "---Empleado agregado exitosamente---" << endl;
 			break;
 		case 2:
+			arbol.cargarDesdeArchivo(aux, "empleados.bin");
 			cout << endl << "Digite el id del empleado a buscar: ";
 			cin >> id;
-			emp = arbol.buscarempleado(to_string(id));
+			emp =reinterpret_cast<Empleado*>( arbol.buscar(to_string(id),new Empleado()));
 			if (emp==NULL)
 			{
 				cout << endl << "No existe el empleado con ese id";
 			}
 			else {
+				
 				cout << endl << "---Modificar empleado---" << endl;
 				
 				cout << endl << "Digite el nombre: ";
@@ -102,6 +105,47 @@ void gestion_empleados() {
 	}
 	cout << endl;
 }
+void gestion_inventarios() {
+	Inventario inventario;
+
+	// Crear algunos productos
+	Producto* p1 = new Producto("001", "Laptop", "Electrónica", 1200.50, 10, true);
+	Producto* p2 = new Producto("002", "Smartphone", "Electrónica", 800.00, 15, true);
+	Producto* p3 = new Producto("003", "Mesa", "Muebles", 150.75, 5, true);
+	Producto* p4 = new Producto("004", "Silla", "Muebles", 50.25, 20, true);
+	Producto* p5 = new Producto("005", "Tablet", "Electrónica", 300.00, 8, true);
+
+	inventario.agregarProducto(p1);
+	inventario.agregarProducto(p2);
+	inventario.agregarProducto(p3);
+	inventario.agregarProducto(p4);
+	inventario.agregarProducto(p5);
+	std::cout << "\n\n=== Gestor de inventarios ===" << std::endl;
+	std::cout << "=== Buscar producto por ID ===" << std::endl;
+	Producto* producto = inventario.buscarPorId("002");
+	if (producto != nullptr) {
+		std::cout << "Producto encontrado: " << producto->nombre
+			<< ", Categoría: " << producto->categoria
+			<< ", Precio: $" << producto->precio << std::endl;
+	}
+	else {
+		std::cout << "Producto no encontrado." << std::endl;
+	}
+
+	std::cout << "\n=== Buscar productos por categoría ===" << std::endl;
+	std::vector<Producto*> productosElectronica = inventario.buscarPorCategoria("Electrónica");
+	std::cout << "Productos en la categoría Electrónica: " << productosElectronica.size() << std::endl;
+	for (Producto* p : productosElectronica) {
+		std::cout << " - " << p->nombre << " (ID: " << p->id << ")" << std::endl;
+	}
+
+	std::cout << "\n=== Recorrer inventario ===" << std::endl;
+	inventario.recorrerInventario();
+
+	
+	std::cout << "\n=== Fin de gestor de inventarios === \n\n" << std::endl;
+	return;
+}
 int main() {
 	int opcion = 1;
 	while (opcion != 6) {
@@ -119,6 +163,7 @@ int main() {
 			gestion_empleados();
 			break;
 		case 2:
+			gestion_inventarios();
 			break;
 		case 3:
 			break;

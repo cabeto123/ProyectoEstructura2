@@ -1,9 +1,10 @@
 #pragma once
 #include <string>
+#include "ModuloPadre.h"
 using namespace std;
-class Empleado
+class Empleado:public ModuloPadre
 {
-	private:
+	public:
 		int id;
 		int salario;
 		string estado;

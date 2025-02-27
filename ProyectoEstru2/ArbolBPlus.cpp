@@ -243,10 +243,6 @@ NodoBPlus* ArbolBPlus::deserializarNodoEmpleado(std::ifstream& in)
 
 	return nodo;
 }
-NodoBPlus* ArbolBPlus::deserializarNodoCliente(std::ifstream& in)
-{
-	return nullptr;
-}
 void ArbolBPlus::insertarEnNodoInterno(const std::string& clave, NodoBPlus* nodo, NodoBPlus* hijoDerecho) {
 	auto posicion = upper_bound(nodo->claves.begin(), nodo->claves.end(), clave) - nodo->claves.begin();
 	nodo->claves.insert(nodo->claves.begin() + posicion, clave);
@@ -316,7 +312,7 @@ void ArbolBPlus::dividirHoja(NodoBPlus* nodo) {
 	}
 }
 
-void ArbolBPlus::insertar(const std::string& clave, Producto* producto) {
+void ArbolBPlus::insertar(const std::string& clave,ModuloPadre* m) {
 	NodoBPlus* actual = raiz;
 
 	while (!actual->esHoja) {
@@ -326,32 +322,42 @@ void ArbolBPlus::insertar(const std::string& clave, Producto* producto) {
 
 	auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
 	actual->claves.insert(actual->claves.begin() + posicion, clave);
-	actual->valores.insert(actual->valores.begin() + posicion, producto);
+	if (dynamic_cast<Producto*>(m))
+	{
+		Producto* producto = dynamic_cast<Producto*>(m);
+		actual->valores.insert(actual->valores.begin() + posicion, producto);
+	}
+	if (dynamic_cast<Empleado*>(m))
+	{
+		Empleado* empleado = dynamic_cast<Empleado*>(m);
+		actual->empleados.insert(actual->empleados.begin() + posicion, empleado);
+
+	}
+
 
 	if (actual->claves.size() == 2 * orden - 1) {
 		dividirHoja(actual);
 	}
 }
 
-void ArbolBPlus::insertarempleado(const std::string& clave, Empleado* empleado)
-{
-	NodoBPlus* actual = raiz;
+//void ArbolBPlus::insertarempleado(const std::string& clave, Empleado* empleado)
+//{
+//	NodoBPlus* actual = raiz;
+//
+//	while (!actual->esHoja) {
+//		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//		actual = actual->hijos[posicion];
+//	}
+//
+//	auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//	actual->claves.insert(actual->claves.begin() + posicion, clave);
+//
+//	if (actual->claves.size() == 2 * orden - 1) {
+//		dividirHoja(actual);
+//	}
+//}
 
-	while (!actual->esHoja) {
-		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
-		actual = actual->hijos[posicion];
-	}
-
-	auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
-	actual->claves.insert(actual->claves.begin() + posicion, clave);
-	actual->empleados.insert(actual->empleados.begin() + posicion, empleado);
-
-	if (actual->claves.size() == 2 * orden - 1) {
-		dividirHoja(actual);
-	}
-}
-
-Producto* ArbolBPlus::buscar(const std::string& clave) {
+ModuloPadre* ArbolBPlus::buscar(const std::string& clave,ModuloPadre* m) {
 	NodoBPlus* actual = raiz;
 
 	while (!actual->esHoja) {
@@ -361,24 +367,33 @@ Producto* ArbolBPlus::buscar(const std::string& clave) {
 
 	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
 	if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
-		return actual->valores[posicion];
+		Producto* z = reinterpret_cast<Producto*>(m);
+		if (typeid(*z) == typeid(Producto))
+		{
+			return actual->valores[posicion];
+		}
+		Empleado* x = reinterpret_cast<Empleado*>(m);
+		if (typeid(*x) == typeid(Empleado))
+		{
+			return actual->empleados[posicion];
+		}
 	}
 	return nullptr;
 }
-Empleado* ArbolBPlus::buscarempleado(const std::string& clave) {
-	NodoBPlus* actual = raiz;
-
-	while (!actual->esHoja) {
-		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
-		actual = actual->hijos[posicion];
-	}
-
-	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
-	if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
-		return actual->empleados[posicion];
-	}
-	return nullptr;
-}
+//Empleado* ArbolBPlus::buscarempleado(const std::string& clave) {
+//	NodoBPlus* actual = raiz;
+//
+//	while (!actual->esHoja) {
+//		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//		actual = actual->hijos[posicion];
+//	}
+//
+//	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//	if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
+//		return actual->empleados[posicion];
+//	}
+//	return nullptr;
+//}
 
 void ArbolBPlus::recorrer() {
 	NodoBPlus* actual = raiz;
@@ -392,5 +407,81 @@ void ArbolBPlus::recorrer() {
 
 		}
 		actual = actual->siguiente;
+	}
+}
+
+NodoBPlus* ArbolBPlus::obtenerRaiz() const {
+	return raiz;
+}
+
+void ArbolBPlus::eliminar(const std::string& clave) {
+	NodoBPlus* actual = raiz;
+	NodoBPlus* padre = nullptr;
+	int indicePadre = -1;
+
+	while (!actual->esHoja) {
+		auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+		padre = actual;
+		indicePadre = posicion;
+		actual = actual->hijos[posicion];
+	}
+
+	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+	if (posicion >= actual->claves.size() || actual->claves[posicion] != clave) {
+		std::cout << "Clave no encontrada." << std::endl;
+		return;
+	}
+
+	actual->claves.erase(actual->claves.begin() + posicion);
+	actual->valores.erase(actual->valores.begin() + posicion);
+	if (actual->claves.size() >= orden / 2 || actual == raiz) return;
+	reequilibrarDespuesDeEliminar(actual, padre, indicePadre);
+}
+
+
+void ArbolBPlus::reequilibrarDespuesDeEliminar(NodoBPlus* nodo, NodoBPlus* padre, int indicePadre) {
+	if (!padre) return;
+
+	NodoBPlus* hermanoIzquierdo = (indicePadre > 0) ? padre->hijos[indicePadre - 1] : nullptr;
+	NodoBPlus* hermanoDerecho = (indicePadre < padre->hijos.size() - 1) ? padre->hijos[indicePadre + 1] : nullptr;
+
+	if (hermanoIzquierdo && hermanoIzquierdo->claves.size() > orden / 2) {
+		nodo->claves.insert(nodo->claves.begin(), hermanoIzquierdo->claves.back());
+		nodo->valores.insert(nodo->valores.begin(), hermanoIzquierdo->valores.back());
+		hermanoIzquierdo->claves.pop_back();
+		hermanoIzquierdo->valores.pop_back();
+		padre->claves[indicePadre - 1] = nodo->claves[0];
+		return;
+	}
+
+	if (hermanoDerecho && hermanoDerecho->claves.size() > orden / 2) {
+		nodo->claves.push_back(hermanoDerecho->claves.front());
+		nodo->valores.push_back(hermanoDerecho->valores.front());
+		hermanoDerecho->claves.erase(hermanoDerecho->claves.begin());
+		hermanoDerecho->valores.erase(hermanoDerecho->valores.begin());
+		padre->claves[indicePadre] = hermanoDerecho->claves[0];
+		return;
+	}
+
+	if (hermanoIzquierdo) {
+		hermanoIzquierdo->claves.insert(hermanoIzquierdo->claves.end(), nodo->claves.begin(), nodo->claves.end());
+		hermanoIzquierdo->valores.insert(hermanoIzquierdo->valores.end(), nodo->valores.begin(), nodo->valores.end());
+		hermanoIzquierdo->siguiente = nodo->siguiente;
+		padre->claves.erase(padre->claves.begin() + indicePadre - 1);
+		padre->hijos.erase(padre->hijos.begin() + indicePadre);
+		delete nodo;
+	}
+	else if (hermanoDerecho) {
+		nodo->claves.insert(nodo->claves.end(), hermanoDerecho->claves.begin(), hermanoDerecho->claves.end());
+		nodo->valores.insert(nodo->valores.end(), hermanoDerecho->valores.begin(), hermanoDerecho->valores.end());
+		nodo->siguiente = hermanoDerecho->siguiente;
+		padre->claves.erase(padre->claves.begin() + indicePadre);
+		padre->hijos.erase(padre->hijos.begin() + indicePadre + 1);
+		delete hermanoDerecho;
+	}
+
+	if (padre == raiz && padre->claves.empty()) {
+		raiz = padre->hijos[0];
+		delete padre;
 	}
 }
