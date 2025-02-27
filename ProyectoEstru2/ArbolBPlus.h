@@ -9,6 +9,7 @@
 #include <fstream>
 #include "Producto.h"
 #include "Empleado.h"
+#include "Clientes.h"
 #include <type_traits> // Para std::is_same
 
 class NodoBPlus {
@@ -40,6 +41,8 @@ private:
 	NodoBPlus* deserializarNodoCliente(std::ifstream& in); 
 	void serializarNodo(std::ofstream& out, NodoBPlus* nodo);
 	void serializarNodoEmpleado(std::ofstream& out, NodoBPlus* nodo);
+	std::vector<Clientes*> buscarClientesConSaldoMayorA(double saldoMinimo);
+		
 public:
 	ArbolBPlus();
 	ArbolBPlus(int _orden) : orden(_orden), raiz(new NodoBPlus(true)) {}
