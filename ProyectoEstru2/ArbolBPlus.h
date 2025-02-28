@@ -10,7 +10,7 @@
 #include "Producto.h"
 #include "Empleado.h"
 #include "Clientes.h"
-#include <type_traits> // Para std::is_same
+#include <type_traits> 
 
 class NodoBPlus {
 public:

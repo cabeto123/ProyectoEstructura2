@@ -1,15 +1,13 @@
 #include "Clientes.h"
 #include <iostream>
 
-// Implementación del constructor por defecto
+
 Clientes::Clientes() : id(0), saldo(0) {}
 
-// Implementación del constructor con parámetros
 Clientes::Clientes(int id, const std::string& nombre, const std::string& correo, const std::string& telefono, double saldo)
     : id(id), nombre(nombre), correo(correo), telefono(telefono), saldo(saldo) {
 }
 
-// Implementación del método serialize
 void Clientes::serialize(std::ofstream& out) const {
     // Guardar el ID
     out.write(reinterpret_cast<const char*>(&id), sizeof(int));
@@ -42,7 +40,6 @@ void Clientes::serialize(std::ofstream& out) const {
     }
 }
 
-// Implementación del método deserialize
 void Clientes::deserialize(std::ifstream& in) {
     // Leer el ID
     in.read(reinterpret_cast<char*>(&id), sizeof(int));
@@ -79,12 +76,10 @@ void Clientes::deserialize(std::ifstream& in) {
     }
 }
 
-// Implementación del método agregarCompra
 void Clientes::agregarCompra(const std::string& compra) {
     historialCompras.push_back(compra);
 }
 
-// Implementación del método mostrarInfo
 void Clientes::mostrarInfo() const {
     std::cout << "ID: " << id << std::endl;
     std::cout << "Nombre: " << nombre << std::endl;
