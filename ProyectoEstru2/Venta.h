@@ -45,3 +45,4 @@ public:
     void serialize(std::ofstream& out) const;
     static Venta* deserialize(std::ifstream& in);
 };
+

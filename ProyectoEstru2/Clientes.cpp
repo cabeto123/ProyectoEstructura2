@@ -1,94 +1,63 @@
 #include "Clientes.h"
-#include <iostream>
+#include <algorithm>
 
+using namespace std;
 
-Clientes::Clientes() : id(0), saldo(0) {}
-
-Clientes::Clientes(int id, const std::string& nombre, const std::string& correo, const std::string& telefono, double saldo)
+Clientes::Clientes(int id, const string& nombre, const string& correo, const string& telefono, double saldo)
     : id(id), nombre(nombre), correo(correo), telefono(telefono), saldo(saldo) {
 }
 
-void Clientes::serialize(std::ofstream& out) const {
-    // Guardar el ID
-    out.write(reinterpret_cast<const char*>(&id), sizeof(int));
-
-    // Guardar el nombre
-    int tam = nombre.size();
-    out.write(reinterpret_cast<const char*>(&tam), sizeof(int));
-    out.write(nombre.c_str(), tam);
-
-    // Guardar el correo
-    tam = correo.size();
-    out.write(reinterpret_cast<const char*>(&tam), sizeof(int));
-    out.write(correo.c_str(), tam);
-
-    // Guardar el teléfono
-    tam = telefono.size();
-    out.write(reinterpret_cast<const char*>(&tam), sizeof(int));
-    out.write(telefono.c_str(), tam);
-
-    // Guardar el saldo
-    out.write(reinterpret_cast<const char*>(&saldo), sizeof(double));
-
-    // Guardar el historial de compras
-    int numCompras = historialCompras.size();
-    out.write(reinterpret_cast<const char*>(&numCompras), sizeof(int));
-    for (const std::string& compra : historialCompras) {
-        tam = compra.size();
-        out.write(reinterpret_cast<const char*>(&tam), sizeof(int));
-        out.write(compra.c_str(), tam);
-    }
+int Clientes::getId() const {
+    return id;
 }
 
-void Clientes::deserialize(std::ifstream& in) {
-    // Leer el ID
-    in.read(reinterpret_cast<char*>(&id), sizeof(int));
-
-    // Leer el nombre
-    int tam;
-    in.read(reinterpret_cast<char*>(&tam), sizeof(int));
-    nombre.resize(tam);
-    in.read(&nombre[0], tam);
-
-    // Leer el correo
-    in.read(reinterpret_cast<char*>(&tam), sizeof(int));
-    correo.resize(tam);
-    in.read(&correo[0], tam);
-
-    // Leer el teléfono
-    in.read(reinterpret_cast<char*>(&tam), sizeof(int));
-    telefono.resize(tam);
-    in.read(&telefono[0], tam);
-
-    // Leer el saldo
-    in.read(reinterpret_cast<char*>(&saldo), sizeof(double));
-
-    // Leer el historial de compras
-    int numCompras;
-    in.read(reinterpret_cast<char*>(&numCompras), sizeof(int));
-    historialCompras.clear();
-    for (int i = 0; i < numCompras; ++i) {
-        in.read(reinterpret_cast<char*>(&tam), sizeof(int));
-        std::string compra;
-        compra.resize(tam);
-        in.read(&compra[0], tam);
-        historialCompras.push_back(compra);
-    }
+string Clientes::getNombre() const {
+    return nombre;
 }
 
-void Clientes::agregarCompra(const std::string& compra) {
+string Clientes::getCorreo() const {
+    return correo;
+}
+
+string Clientes::getTelefono() const {
+    return telefono;
+}
+
+double Clientes::getSaldo() const {
+    return saldo;
+}
+
+const vector<string>& Clientes::getHistorialCompras() const {
+    return historialCompras;
+}
+
+
+void Clientes::setNombre(const string& nombre) {
+    this->nombre = nombre;
+}
+
+void Clientes::setCorreo(const string& correo) {
+    this->correo = correo;
+}
+
+void Clientes::setTelefono(const string& telefono) {
+    this->telefono = telefono;
+}
+
+void Clientes::setSaldo(double saldo) {
+    this->saldo = saldo;
+}
+
+// Metodo para historial de compras
+void Clientes::agregarCompra(const string& compra) {
     historialCompras.push_back(compra);
 }
 
-void Clientes::mostrarInfo() const {
-    std::cout << "ID: " << id << std::endl;
-    std::cout << "Nombre: " << nombre << std::endl;
-    std::cout << "Correo: " << correo << std::endl;
-    std::cout << "Teléfono: " << telefono << std::endl;
-    std::cout << "Saldo: " << saldo << std::endl;
-    std::cout << "Historial de compras: ";
-    for (const std::string& compra : historialCompras) {
-        std::cout << compra << " ";
-    }
-    std::cout << std::endl;
+void Clientes::limpiarHistorialCompras() {
+    historialCompras.clear();
+}
+
+// Metodo para busqueda compleja
+bool Clientes::SaldoMayorQue(double monto) const {
+    return saldo > monto;
 }

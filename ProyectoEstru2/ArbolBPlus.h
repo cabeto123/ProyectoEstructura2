@@ -9,8 +9,7 @@
 #include <fstream>
 #include "Producto.h"
 #include "Empleado.h"
-#include "Clientes.h"
-#include <type_traits> 
+#include <type_traits> // Para std::is_same
 #include "Pedido.h"
 #include "Venta.h"
 
@@ -20,13 +19,13 @@ public:
 	std::vector<std::string> claves;
 	std::vector<Producto*> valores;
 	std::vector<Empleado*> empleados;
-	std::vector<Clientes*> clientes;
-	std::vector<Pedido*> pedidos;     // Añadido para Pedidos
-	std::vector<Venta*> ventas;       // Añadido para Ventas
+	std::vector<Pedido*> pedidos;  
+	std::vector<Venta*> ventas;
 	std::vector<NodoBPlus*> hijos;
 	NodoBPlus* siguiente;
 
 	NodoBPlus(bool hoja) : esHoja(hoja), siguiente(nullptr) {}
+
 };
 
 class ArbolBPlus {
@@ -39,17 +38,10 @@ private:
 	NodoBPlus* encontrarPadre(NodoBPlus* actual, NodoBPlus* hijo);
 	void dividirHoja(NodoBPlus* nodo);
 	void reequilibrarDespuesDeEliminar(NodoBPlus* nodo, NodoBPlus* padre, int indicePadre);
-	NodoBPlus* deserializarNodo(std::ifstream& in);
-	NodoBPlus* deserializarNodoEmpleado(std::ifstream& in);
-	NodoBPlus* deserializarNodoCliente(std::ifstream& in); 
-	void serializarNodo(std::ofstream& out, NodoBPlus* nodo);
-	void serializarNodoEmpleado(std::ofstream& out, NodoBPlus* nodo);
-		
 public:
 	ArbolBPlus();
 	ArbolBPlus(int _orden) : orden(_orden), raiz(new NodoBPlus(true)) {}
 	void insertar(const std::string& clave, ModuloPadre* m);
-	std::vector<Clientes*> buscarClientesConSaldoMayorA(double saldoMinimo);
 	//void insertarempleado(const std::string& clave, Empleado* empleado);
 	ModuloPadre* buscar(const std::string& clave,ModuloPadre* m);
 	//Empleado* buscarempleado(const std::string& clave);

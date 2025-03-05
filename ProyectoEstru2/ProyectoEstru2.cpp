@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Empleado.h"
-#include "Clientes.h"
 #include "Venta.h"
 #include "Pedido.h"
 #include "ArbolBPlus.h"
@@ -20,11 +19,11 @@ void gestion_empleados() {
 	Empleado* aux = new Empleado();
 	//fin de variables
 	while (opcion != 4) {
-		cout << "-------Menu Gestion empleados-------" << endl;
+		cout << "Que desea hacer?" << endl;
 		cout << "1.Agregar empleado" << endl;
 		cout << "2.Modificar empleado" << endl;
 		cout << "3.Eliminar empleado" << endl;
-		cout << "4.Volver al menu principal. " << endl;
+		cout << "4.Salir" << endl;
 		cout << "Opcion: ";
 		cin >> opcion;
 		switch (opcion)
@@ -94,11 +93,13 @@ void gestion_empleados() {
 				cout << endl << "---Empleado modificado exitosamente---" << endl;
 			}
 	
+
 			break;
 		case 3:
 			arbol.recorrer();
 
 			break;
+
 		}
 	}
 	cout << endl;
@@ -140,124 +141,9 @@ void gestion_inventarios() {
 	std::cout << "\n=== Recorrer inventario ===" << std::endl;
 	inventario.recorrerInventario();
 
+	
 	std::cout << "\n=== Fin de gestor de inventarios === \n\n" << std::endl;
 	return;
-}
-void gestion_clientes() {
-	int opcion = 1;
-	ArbolBPlus arbol(3);  // Asumiendo que el grado del árbol es 3
-	ifstream archivo("clientes.bin");
-	Clientes* cliente = nullptr;
-	Clientes* aux = new Clientes();
-
-	while (opcion != 5) {
-		cout << "------Menu Gestion de Clientes-----" << endl;
-		cout << "1. Agregar cliente" << endl;
-		cout << "2. Modificar cliente" << endl;
-		cout << "3. Eliminar cliente" << endl;
-		cout << "4. Buscar clientes con saldo mayor a X" << endl;
-		cout << "5. Volver al menu principal. " << endl;
-		cout << "Opcion: ";
-		cin >> opcion;
-
-		switch (opcion) {
-		case 1: {
-			int id;
-			string nombre, correo, telefono;
-			double saldo;
-
-			cout << endl << "---Agregar cliente---" << endl;
-			cout << "Digite el ID del cliente: ";
-			cin >> id;
-			cout << "Digite el nombre: ";
-			cin.ignore();
-			getline(cin, nombre);
-			cout << "Digite el correo: ";
-			getline(cin, correo);
-			cout << "Digite el telefono: ";
-			getline(cin, telefono);
-			cout << "Digite el saldo: ";
-			cin >> saldo;
-
-			if (archivo.good()) {
-				arbol.cargarDesdeArchivo(aux, "clientes.bin");
-			}
-			arbol.insertar(to_string(id), new Clientes(id, nombre, correo, telefono, saldo));
-			arbol.guardarEnArchivo(aux, "clientes.bin");
-			cout << endl << "---Cliente agregado exitosamente---" << endl;
-			break;
-		}
-
-		case 2: {
-			int id;
-			cout << endl << "Digite el ID del cliente a modificar: ";
-			cin >> id;
-			cliente = dynamic_cast<Clientes*>(arbol.buscar(to_string(id), new Clientes()));
-
-			if (cliente == nullptr) {
-				cout << endl << "No existe el cliente con ese ID" << endl;
-			}
-			else {
-				string nombre, correo, telefono;
-				double saldo;
-
-				cout << endl << "---Modificar cliente---" << endl;
-				cout << "Digite el nuevo nombre: ";
-				cin.ignore();
-				getline(cin, nombre);
-				cliente->nombre = nombre;
-				cout << "Digite el nuevo correo: ";
-				getline(cin, correo);
-				cliente->correo = correo;
-				cout << "Digite el nuevo telefono: ";
-				getline(cin, telefono);
-				cliente->telefono = telefono;
-				cout << "Digite el nuevo saldo: ";
-				cin >> saldo;
-				cliente->saldo = saldo;
-				cout << endl << "---Cliente modificado exitosamente---" << endl;
-			}
-			break;
-		}
-
-		case 3: {
-			int id;
-			cout << endl << "Digite el ID del cliente a eliminar: ";
-			cin >> id;
-			if (arbol.eliminar(to_string(id))) {
-				cout << endl << "---Cliente eliminado exitosamente---" << endl;
-			}
-			else {
-				cout << endl << "No existe el cliente con ese ID" << endl;
-			}
-			break;
-		}
-
-		case 4: {
-			double saldoMinimo;
-			cout << endl << "Digite el saldo minimo para buscar clientes: ";
-			cin >> saldoMinimo;
-
-			// Llama a la función buscarClientesConSaldoMayorA
-			std::vector<Clientes*> clientes = arbol.buscarClientesConSaldoMayorA(saldoMinimo);
-
-			cout << "Clientes con saldo mayor a " << saldoMinimo << ":" << endl;
-			for (Clientes* c : clientes) {
-				cout << "ID: " << c->id << ", Nombre: " << c->nombre << ", Saldo: " << c->saldo << endl;
-			}
-			break;
-		}
-
-		case 5:
-			cout << endl << "Saliendo del menu de gestion de clientes..." << endl;
-			break;
-
-		default:
-			cout << endl << "Opcion no valida. Intente de nuevo." << endl;
-			break;
-		}
-	}
-	delete aux;
 }
 int main() {
 	int opcion = 1;
@@ -279,7 +165,6 @@ int main() {
 			gestion_inventarios();
 			break;
 		case 3:
-			gestion_clientes();
 			break;
 		case 4:
 			break;
