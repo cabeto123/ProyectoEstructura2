@@ -41,12 +41,12 @@ private:
 	NodoBPlus* deserializarNodoCliente(std::ifstream& in); 
 	void serializarNodo(std::ofstream& out, NodoBPlus* nodo);
 	void serializarNodoEmpleado(std::ofstream& out, NodoBPlus* nodo);
+	std::vector<Clientes*> buscarClientesConSaldoMayorA(double saldoMinimo);
 		
 public:
 	ArbolBPlus();
 	ArbolBPlus(int _orden) : orden(_orden), raiz(new NodoBPlus(true)) {}
 	void insertar(const std::string& clave, ModuloPadre* m);
-	std::vector<Clientes*> buscarClientesConSaldoMayorA(double saldoMinimo);
 	//void insertarempleado(const std::string& clave, Empleado* empleado);
 	ModuloPadre* buscar(const std::string& clave,ModuloPadre* m);
 	//Empleado* buscarempleado(const std::string& clave);

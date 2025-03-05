@@ -314,7 +314,7 @@ void ArbolBPlus::dividirHoja(NodoBPlus* nodo) {
 	}
 }
 
-void ArbolBPlus::insertar(const std::string& clave, ModuloPadre* m) {
+void ArbolBPlus::insertar(const std::string& clave,ModuloPadre* m) {
 	NodoBPlus* actual = raiz;
 
 	while (!actual->esHoja) {
@@ -324,26 +324,42 @@ void ArbolBPlus::insertar(const std::string& clave, ModuloPadre* m) {
 
 	auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
 	actual->claves.insert(actual->claves.begin() + posicion, clave);
-
-	if (dynamic_cast<Producto*>(m)) {
+	if (dynamic_cast<Producto*>(m))
+	{
 		Producto* producto = dynamic_cast<Producto*>(m);
 		actual->valores.insert(actual->valores.begin() + posicion, producto);
 	}
-	else if (dynamic_cast<Empleado*>(m)) {
+	if (dynamic_cast<Empleado*>(m))
+	{
 		Empleado* empleado = dynamic_cast<Empleado*>(m);
 		actual->empleados.insert(actual->empleados.begin() + posicion, empleado);
+
 	}
-	else if (dynamic_cast<Clientes*>(m)) {
-		Clientes* cliente = dynamic_cast<Clientes*>(m);
-		actual->clientes.insert(actual->clientes.begin() + posicion, cliente);
-	}
+
 
 	if (actual->claves.size() == 2 * orden - 1) {
 		dividirHoja(actual);
 	}
 }
 
-ModuloPadre* ArbolBPlus::buscar(const std::string& clave, ModuloPadre* m) {
+//void ArbolBPlus::insertarempleado(const std::string& clave, Empleado* empleado)
+//{
+//	NodoBPlus* actual = raiz;
+//
+//	while (!actual->esHoja) {
+//		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//		actual = actual->hijos[posicion];
+//	}
+//
+//	auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//	actual->claves.insert(actual->claves.begin() + posicion, clave);
+//
+//	if (actual->claves.size() == 2 * orden - 1) {
+//		dividirHoja(actual);
+//	}
+//}
+
+ModuloPadre* ArbolBPlus::buscar(const std::string& clave,ModuloPadre* m) {
 	NodoBPlus* actual = raiz;
 
 	while (!actual->esHoja) {
@@ -353,18 +369,33 @@ ModuloPadre* ArbolBPlus::buscar(const std::string& clave, ModuloPadre* m) {
 
 	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
 	if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
-		if (dynamic_cast<Producto*>(m)) {
+		Producto* z = reinterpret_cast<Producto*>(m);
+		if (typeid(*z) == typeid(Producto))
+		{
 			return actual->valores[posicion];
 		}
-		else if (dynamic_cast<Empleado*>(m)) {
+		Empleado* x = reinterpret_cast<Empleado*>(m);
+		if (typeid(*x) == typeid(Empleado))
+		{
 			return actual->empleados[posicion];
-		}
-		else if (dynamic_cast<Clientes*>(m)) {
-			return actual->clientes[posicion];
 		}
 	}
 	return nullptr;
 }
+//Empleado* ArbolBPlus::buscarempleado(const std::string& clave) {
+//	NodoBPlus* actual = raiz;
+//
+//	while (!actual->esHoja) {
+//		auto posicion = upper_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//		actual = actual->hijos[posicion];
+//	}
+//
+//	auto posicion = lower_bound(actual->claves.begin(), actual->claves.end(), clave) - actual->claves.begin();
+//	if (posicion < actual->claves.size() && actual->claves[posicion] == clave) {
+//		return actual->empleados[posicion];
+//	}
+//	return nullptr;
+//}
 
 void ArbolBPlus::recorrer() {
 	NodoBPlus* actual = raiz;
@@ -374,15 +405,8 @@ void ArbolBPlus::recorrer() {
 
 	while (actual != nullptr) {
 		for (size_t i = 0; i < actual->claves.size(); ++i) {
-			if (!actual->valores.empty()) {
-				std::cout << "Clave: " << actual->claves[i] << ", Producto: " << actual->valores[i]->nombre << std::endl;
-			}
-			else if (!actual->empleados.empty()) {
-				std::cout << "Clave: " << actual->claves[i] << ", Empleado: " << actual->empleados[i]->nombre << std::endl;
-			}
-			else if (!actual->clientes.empty()) {
-				std::cout << "Clave: " << actual->claves[i] << ", Cliente: " << actual->clientes[i]->nombre << std::endl;
-			}
+			std::cout << "Clave: " << actual->claves[i] << ", Producto: " << actual->valores[i]->nombre << std::endl;
+
 		}
 		actual = actual->siguiente;
 	}
@@ -435,16 +459,7 @@ void ArbolBPlus::eliminar(const std::string& clave) {
 	}
 
 	actual->claves.erase(actual->claves.begin() + posicion);
-	if (!actual->valores.empty()) {
-		actual->valores.erase(actual->valores.begin() + posicion);
-	}
-	else if (!actual->empleados.empty()) {
-		actual->empleados.erase(actual->empleados.begin() + posicion);
-	}
-	else if (!actual->clientes.empty()) {
-		actual->clientes.erase(actual->clientes.begin() + posicion);
-	}
-
+	actual->valores.erase(actual->valores.begin() + posicion);
 	if (actual->claves.size() >= orden / 2 || actual == raiz) return;
 	reequilibrarDespuesDeEliminar(actual, padre, indicePadre);
 }
