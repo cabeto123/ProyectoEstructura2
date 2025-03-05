@@ -448,6 +448,8 @@ void ArbolBPlus::eliminar(const std::string& clave) {
 	if (actual->claves.size() >= orden / 2 || actual == raiz) return;
 	reequilibrarDespuesDeEliminar(actual, padre, indicePadre);
 }
+
+
 void ArbolBPlus::reequilibrarDespuesDeEliminar(NodoBPlus* nodo, NodoBPlus* padre, int indicePadre) {
 	if (!padre) return;
 
