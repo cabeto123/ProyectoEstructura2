@@ -10,8 +10,11 @@
 #include "Producto.h"
 #include "Empleado.h"
 #include <type_traits> // Para std::is_same
+<<<<<<< HEAD
 #include "Pedido.h"
 #include "Venta.h"
+=======
+>>>>>>> 243ed5e96ceaab90c9a81a82c2f1bd6b95902fc1
 
 class NodoBPlus {
 public:
@@ -19,8 +22,12 @@ public:
 	std::vector<std::string> claves;
 	std::vector<Producto*> valores;
 	std::vector<Empleado*> empleados;
+<<<<<<< HEAD
 	std::vector<Pedido*> pedidos;  
 	std::vector<Venta*> ventas;
+=======
+	std::vector<Clientes*> clientes;
+>>>>>>> 243ed5e96ceaab90c9a81a82c2f1bd6b95902fc1
 	std::vector<NodoBPlus*> hijos;
 	NodoBPlus* siguiente;
 
@@ -38,6 +45,14 @@ private:
 	NodoBPlus* encontrarPadre(NodoBPlus* actual, NodoBPlus* hijo);
 	void dividirHoja(NodoBPlus* nodo);
 	void reequilibrarDespuesDeEliminar(NodoBPlus* nodo, NodoBPlus* padre, int indicePadre);
+<<<<<<< HEAD
+=======
+	NodoBPlus* deserializarNodo(std::ifstream& in);
+	NodoBPlus* deserializarNodoEmpleado(std::ifstream& in);
+	NodoBPlus* deserializarNodoCliente(std::ifstream& in); 
+	void serializarNodo(std::ofstream& out, NodoBPlus* nodo);
+	void serializarNodoEmpleado(std::ofstream& out, NodoBPlus* nodo);
+>>>>>>> 243ed5e96ceaab90c9a81a82c2f1bd6b95902fc1
 public:
 	ArbolBPlus();
 	ArbolBPlus(int _orden) : orden(_orden), raiz(new NodoBPlus(true)) {}
