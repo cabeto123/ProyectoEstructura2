@@ -10,11 +10,6 @@
 #include "Producto.h"
 #include "Empleado.h"
 #include <type_traits> // Para std::is_same
-<<<<<<< HEAD
-#include "Pedido.h"
-#include "Venta.h"
-=======
->>>>>>> 243ed5e96ceaab90c9a81a82c2f1bd6b95902fc1
 
 class NodoBPlus {
 public:
@@ -22,12 +17,6 @@ public:
 	std::vector<std::string> claves;
 	std::vector<Producto*> valores;
 	std::vector<Empleado*> empleados;
-<<<<<<< HEAD
-	std::vector<Pedido*> pedidos;  
-	std::vector<Venta*> ventas;
-=======
-	std::vector<Clientes*> clientes;
->>>>>>> 243ed5e96ceaab90c9a81a82c2f1bd6b95902fc1
 	std::vector<NodoBPlus*> hijos;
 	NodoBPlus* siguiente;
 
@@ -45,20 +34,12 @@ private:
 	NodoBPlus* encontrarPadre(NodoBPlus* actual, NodoBPlus* hijo);
 	void dividirHoja(NodoBPlus* nodo);
 	void reequilibrarDespuesDeEliminar(NodoBPlus* nodo, NodoBPlus* padre, int indicePadre);
-<<<<<<< HEAD
-=======
-	NodoBPlus* deserializarNodo(std::ifstream& in);
-	NodoBPlus* deserializarNodoEmpleado(std::ifstream& in);
-	NodoBPlus* deserializarNodoCliente(std::ifstream& in); 
-	void serializarNodo(std::ofstream& out, NodoBPlus* nodo);
-	void serializarNodoEmpleado(std::ofstream& out, NodoBPlus* nodo);
->>>>>>> 243ed5e96ceaab90c9a81a82c2f1bd6b95902fc1
 public:
 	ArbolBPlus();
 	ArbolBPlus(int _orden) : orden(_orden), raiz(new NodoBPlus(true)) {}
 	void insertar(const std::string& clave, ModuloPadre* m);
 	//void insertarempleado(const std::string& clave, Empleado* empleado);
-	ModuloPadre* buscar(const std::string& clave,ModuloPadre* m);
+	ModuloPadre* buscar(const std::string& clave, ModuloPadre* m);
 	//Empleado* buscarempleado(const std::string& clave);
 	void recorrer();
 	NodoBPlus* obtenerRaiz() const;
@@ -90,12 +71,12 @@ public:
 		in.read(reinterpret_cast<char*>(&orden), sizeof(int));
 
 		// Deserializar el árbol a partir de la raíz
-		raiz = deserializarNodo(dato,in);
+		raiz = deserializarNodo(dato, in);
 
 		in.close();
 	}
 	template <typename T>
-	void serializarNodo(const T* dato, std::ofstream& out, NodoBPlus* nodo) 
+	void serializarNodo(const T* dato, std::ofstream& out, NodoBPlus* nodo)
 	{
 		if (!nodo) return;
 
@@ -115,14 +96,14 @@ public:
 
 		// Guardar los valores (si es un nodo hoja)
 		if (nodo->esHoja) {
-			
+
 			if constexpr (std::is_same<T, Empleado>::value)
 			{
 				for (Empleado* prod : nodo->empleados) {
 					prod->serialize(out); // Asume que Producto tiene un método serialize
 				}
 			}
-			
+
 			if constexpr (std::is_same<T, Producto>::value)
 			{
 				for (Producto* prod : nodo->valores) {
@@ -136,7 +117,7 @@ public:
 			int numHijos = nodo->hijos.size();
 			out.write(reinterpret_cast<const char*>(&numHijos), sizeof(int));
 			for (NodoBPlus* hijo : nodo->hijos) {
-				serializarNodo(dato,out, hijo);
+				serializarNodo(dato, out, hijo);
 			}
 		}
 
@@ -145,7 +126,7 @@ public:
 			bool tieneSiguiente = (nodo->siguiente != nullptr);
 			out.write(reinterpret_cast<const char*>(&tieneSiguiente), sizeof(bool));
 			if (tieneSiguiente) {
-				serializarNodo(dato,out, nodo->siguiente);
+				serializarNodo(dato, out, nodo->siguiente);
 			}
 		}
 	}
@@ -193,7 +174,7 @@ public:
 			int numHijos;
 			in.read(reinterpret_cast<char*>(&numHijos), sizeof(int));
 			for (int i = 0; i < numHijos; i++) {
-				NodoBPlus* hijo = deserializarNodo(dato,in);
+				NodoBPlus* hijo = deserializarNodo(dato, in);
 				nodo->hijos.push_back(hijo);
 			}
 		}
@@ -203,7 +184,7 @@ public:
 			bool tieneSiguiente;
 			in.read(reinterpret_cast<char*>(&tieneSiguiente), sizeof(bool));
 			if (tieneSiguiente) {
-				nodo->siguiente = deserializarNodo(dato,in);
+				nodo->siguiente = deserializarNodo(dato, in);
 			}
 		}
 
@@ -211,4 +192,4 @@ public:
 	}
 };
 
-#endif // ARBOLBPLUS_H
+#endif // ARBOLBPLUS_H   
