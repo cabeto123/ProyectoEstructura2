@@ -11,8 +11,6 @@
 #include "Empleado.h"
 #include "Clientes.h"
 #include <type_traits> 
-#include "Pedido.h"
-#include "Venta.h"
 
 class NodoBPlus {
 public:
@@ -21,12 +19,11 @@ public:
 	std::vector<Producto*> valores;
 	std::vector<Empleado*> empleados;
 	std::vector<Clientes*> clientes;
-	std::vector<Pedido*> pedidos;     // Añadido para Pedidos
-	std::vector<Venta*> ventas;       // Añadido para Ventas
 	std::vector<NodoBPlus*> hijos;
 	NodoBPlus* siguiente;
 
 	NodoBPlus(bool hoja) : esHoja(hoja), siguiente(nullptr) {}
+
 };
 
 class ArbolBPlus {
