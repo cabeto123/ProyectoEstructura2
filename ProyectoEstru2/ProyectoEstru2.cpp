@@ -20,7 +20,7 @@ void gestion_empleados() {
 	Empleado* aux = new Empleado();
 	//fin de variables
 	while (opcion != 4) {
-		cout << "Menu Gestion empleados" << endl;
+		cout << "Que desea hacer?" << endl;
 		cout << "1.Agregar empleado" << endl;
 		cout << "2.Modificar empleado" << endl;
 		cout << "3.Eliminar empleado" << endl;
@@ -146,46 +146,6 @@ void gestion_inventarios() {
 	std::cout << "\n=== Fin de gestor de inventarios === \n\n" << std::endl;
 	return;
 }
-void gestion_clientes() {
-	int opcion = 1;
-	ArbolBPlus arbol(3);  // Asumiendo que el grado del árbol es 3
-	ifstream archivo("clientes.bin");
-	Clientes* cliente = nullptr;
-	Clientes* aux = new Clientes();
-
-	while (opcion != 5) {
-		cout << "Menu Gestion de Clientes" << endl;
-		cout << "1. Agregar cliente" << endl;
-		cout << "2. Modificar cliente" << endl;
-		cout << "3. Eliminar cliente" << endl;
-		cout << "4. Buscar clientes con saldo mayor a X" << endl;
-		cout << "5. Salir" << endl;
-		cout << "Opcion: ";
-		cin >> opcion;
-
-		switch (opcion) {
-			// ... (otros casos)
-
-		case 4: {
-			double saldoMinimo;
-			cout << endl << "Digite el saldo minimo para buscar clientes: ";
-			cin >> saldoMinimo;
-
-			// Llamar a la función buscarClientesConSaldoMayorA
-			std::vector<Clientes*> clientes = arbol.buscarClientesConSaldoMayorA(saldoMinimo);
-
-			// Mostrar los clientes encontrados
-			cout << "Clientes con saldo mayor a " << saldoMinimo << ":" << endl;
-			for (Clientes* c : clientes) {
-				cout << "ID: " << c->id << ", Nombre: " << c->nombre << ", Saldo: " << c->saldo << endl;
-			}
-			break;
-		}
-
-		}
-	}
-	delete aux;
-}
 int main() {
 	int opcion = 1;
 	while (opcion != 6) {
@@ -206,7 +166,6 @@ int main() {
 			gestion_inventarios();
 			break;
 		case 3:
-			gestion_clientes();
 			break;
 		case 4:
 			break;

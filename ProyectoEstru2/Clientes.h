@@ -1,31 +1,42 @@
-#ifndef CLIENTES_H
-#define CLIENTES_H
+#pragma once
 
 #include <string>
 #include <vector>
-#include <fstream>
-#include "ModuloPadre.h" // Incluye la clase base ModuloPadre
 
-class Clientes : public ModuloPadre {
+using namespace std;
+
+class Clientes {
 public:
-    int id; // ID del cliente
-    std::string nombre; // Nombre del cliente
-    std::string correo; // Correo electrónico del cliente
-    std::string telefono; // Teléfono del cliente
-    double saldo; // Saldo del cliente
-    std::vector<std::string> historialCompras; // Historial de compras del cliente
+    
+    Clientes(int id, const string& nombre, const string& correo, const string& telefono, double saldo);
 
-    // Constructores
-    Clientes(); // Constructor por defecto
-    Clientes(int id, const std::string& nombre, const std::string& correo, const std::string& telefono, double saldo); // Constructor con parámetros
+    int getId() const;
+    string getNombre() const;
+    string getCorreo() const;
+    string getTelefono() const;
+    double getSaldo() const;
+    const vector<string>& getHistorialCompras() const;
 
-    // Métodos de serialización y deserialización
-    void serialize(std::ofstream& out) const; // Guarda los datos del cliente en un archivo binario
-    void deserialize(std::ifstream& in); // Carga los datos del cliente desde un archivo binario
 
-    // Métodos adicionales (opcionales)
-    void agregarCompra(const std::string& compra); // Agrega una compra al historial
-    void mostrarInfo() const; // Muestra la información del cliente
+    void setNombre(const string& nombre);
+    void setCorreo(const string& correo);
+    void setTelefono(const string& telefono);
+    void setSaldo(double saldo);
+
+    //Metodo para historial de compras
+    void agregarCompra(const string& compra);
+    void limpiarHistorialCompras();
+
+    //Metodo para búsqueda compleja
+    bool SaldoMayorQue(double monto) const;
+
+private:
+    int id;
+    string nombre;
+    string correo;
+    string telefono;
+    double saldo;
+    vector<string> historialCompras;
 };
 
-#endif // CLIENTES_H
+

@@ -1,8 +1,6 @@
 #include "ArbolBPlus.h"
 #include "Inventario.h"
 #include "Producto.h"
-#include "Clientes.h"
-
 
 void ArbolBPlus::guardarEnArchivo(const std::string& nombreArchivo) {
 	std::ofstream out(nombreArchivo, std::ios::binary);
@@ -415,31 +413,7 @@ void ArbolBPlus::recorrer() {
 NodoBPlus* ArbolBPlus::obtenerRaiz() const {
 	return raiz;
 }
-std::vector<Clientes*> ArbolBPlus::buscarClientesConSaldoMayorA(double saldoMinimo) {
-	std::vector<Clientes*> clientesEncontrados; // Vector para almacenar los clientes que cumplen la condición
-	NodoBPlus* actual = raiz; // Comenzar desde la raíz del árbol
 
-	// Ir al primer nodo hoja
-	while (!actual->esHoja) {
-		actual = actual->hijos[0];
-	}
-
-	// Recorrer todos los nodos hoja
-	while (actual != nullptr) {
-		// Recorrer las claves y valores del nodo actual
-		for (size_t i = 0; i < actual->claves.size(); ++i) {
-			// Verificar si el valor es un cliente y si su saldo es mayor al mínimo
-			Clientes* cliente = dynamic_cast<Clientes*>(actual->clientes[i]);
-			if (cliente && cliente->saldo > saldoMinimo) {
-				clientesEncontrados.push_back(cliente); // Agregar al vector de resultados
-			}
-		}
-		// Moverse al siguiente nodo hoja
-		actual = actual->siguiente;
-	}
-
-	return clientesEncontrados; // Devolver los clientes encontrados
-}
 void ArbolBPlus::eliminar(const std::string& clave) {
 	NodoBPlus* actual = raiz;
 	NodoBPlus* padre = nullptr;
