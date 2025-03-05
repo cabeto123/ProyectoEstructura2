@@ -10,6 +10,8 @@
 #include "Producto.h"
 #include "Empleado.h"
 #include <type_traits> // Para std::is_same
+#include "Pedido.h"
+#include "Venta.h"
 
 class NodoBPlus {
 public:
@@ -17,6 +19,8 @@ public:
 	std::vector<std::string> claves;
 	std::vector<Producto*> valores;
 	std::vector<Empleado*> empleados;
+	std::vector<Pedido*> pedidos;     // Añadido para Pedidos
+	std::vector<Venta*> ventas;       // Añadido para Ventas
 	std::vector<NodoBPlus*> hijos;
 	NodoBPlus* siguiente;
 
