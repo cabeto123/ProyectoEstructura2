@@ -1,6 +1,7 @@
 #include "ArbolBPlus.h"
 #include "Inventario.h"
 #include "Producto.h"
+#include "Clientes.h"
 
 void ArbolBPlus::insertarEnNodoInterno(const std::string& clave, NodoBPlus* nodo, NodoBPlus* hijoDerecho) {
 	auto posicion = upper_bound(nodo->claves.begin(), nodo->claves.end(), clave) - nodo->claves.begin();

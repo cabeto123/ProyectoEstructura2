@@ -1,7 +1,8 @@
 #pragma once
-class ModuloPadre
-{
-	public:
-	virtual ~ModuloPadre(){}
-};
 
+#include <fstream>
+
+class ModuloPadre {
+public:
+    virtual ~ModuloPadre() = default; 
+};

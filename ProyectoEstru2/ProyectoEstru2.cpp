@@ -4,6 +4,7 @@
 #include "Pedido.h"
 #include "ArbolBPlus.h"
 #include "Inventario.h"
+#include "Clientes.h"
 #include "ModuloPadre.h"
 
 using namespace std;
@@ -17,9 +18,9 @@ void gestion_empleados() {
 	ifstream archivo("empleados.bin");
 	Empleado* emp = NULL;
 	Empleado* aux = new Empleado();
-	//fin de variables
+	
 	while (opcion != 4) {
-		cout << "Que desea hacer?" << endl;
+		cout << "----Gestion Empleados----" << endl;
 		cout << "1.Agregar empleado" << endl;
 		cout << "2.Modificar empleado" << endl;
 		cout << "3.Eliminar empleado" << endl;
@@ -145,6 +146,97 @@ void gestion_inventarios() {
 	std::cout << "\n=== Fin de gestor de inventarios === \n\n" << std::endl;
 	return;
 }
+
+void gestion_clientes() {
+	int opcion = 3;
+	// Variables
+	int id;
+	double saldo;
+	string nombre, correo, telefono;
+	ArbolBPlus arbol(3);
+	ifstream archivo("clientes.bin");
+	Clientes* cliente = NULL;
+	Clientes* aux = new Clientes(0, "", "", "", 0.0);
+
+	while (opcion != 4) {
+		cout << "----Gestion Clientes----" << endl;
+		cout << "1. Agregar cliente" << endl;
+		cout << "2. Modificar cliente" << endl;
+		cout << "3. Eliminar cliente" << endl;
+		cout << "4. Salir" << endl;
+		cout << "Opcion: ";
+		cin >> opcion;
+
+		switch (opcion) {
+		case 1:
+			cout << endl << "---Agregar cliente---" << endl;
+			cout << "Digite el id del cliente: ";
+			cin >> id;
+			cout << endl << "Digite el nombre: ";
+			cin.ignore();
+			getline(cin, nombre);
+			cout << endl << "Digite el correo: ";
+			getline(cin, correo);
+			cout << endl << "Digite el telefono: ";
+			getline(cin, telefono);
+			cout << endl << "Digite el saldo: ";
+			cin >> saldo;
+
+			if (archivo.good()) {
+				arbol.cargarDesdeArchivo(aux, "clientes.bin");
+				arbol.insertar(to_string(id), new Clientes(id, nombre, correo, telefono, saldo));
+			}
+			else {
+				arbol.insertar(to_string(id), new Clientes(id, nombre, correo, telefono, saldo));
+			}
+			arbol.guardarEnArchivo(aux, "clientes.bin");
+			cout << endl << "---Cliente agregado exitosamente---" << endl;
+			break;
+
+		case 2:
+			arbol.cargarDesdeArchivo(aux, "clientes.bin");
+			cout << endl << "Digite el id del cliente a buscar: ";
+			cin >> id;
+			cliente = reinterpret_cast<Clientes*>(arbol.buscar(to_string(id), new Clientes(0, "", "", "", 0.0)));
+
+			if (cliente == NULL) {
+				cout << endl << "No existe el cliente con ese id" << endl;
+			}
+			else {
+				cout << endl << "---Modificar cliente---" << endl;
+				cout << endl << "Digite el nombre: ";
+				cin.ignore();
+				getline(cin, nombre);
+				cliente->setNombre(nombre);
+				cout << endl << "Digite el correo: ";
+				getline(cin, correo);
+				cliente->setCorreo(correo);
+				cout << endl << "Digite el telefono: ";
+				getline(cin, telefono);
+				cliente->setTelefono(telefono);
+				cout << endl << "Digite el saldo: ";
+				cin >> saldo;
+				cliente->setSaldo(saldo);
+				cout << endl << "---Cliente modificado exitosamente---" << endl;
+			}
+			break;
+
+		case 3:
+			arbol.cargarDesdeArchivo(aux, "clientes.bin");
+			cout << endl << "Digite el id del cliente a eliminar: ";
+			cin >> id;
+			arbol.eliminar(to_string(id));
+			arbol.guardarEnArchivo(aux, "clientes.bin");
+			cout << endl << "---Cliente eliminado exitosamente---" << endl;
+			break;
+
+		default:
+			cout << "Opcion no valida." << endl;
+			break;
+		}
+	}
+	cout << endl;
+}
 int main() {
 	int opcion = 1;
 	while (opcion != 6) {
@@ -165,13 +257,19 @@ int main() {
 			gestion_inventarios();
 			break;
 		case 3:
+			gestion_clientes();
 			break;
 		case 4:
 			break;
 		case 5:
 			break;
+		case 6:
+			cout << "Saliendo..." << endl;
+			break;
+		default:
+			cout << "Opcion no valida." << endl;
+			break;
 		}
 	}
-
 	return 0;
 }
